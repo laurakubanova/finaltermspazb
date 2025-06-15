@@ -94,6 +94,9 @@ public class Dj {
             v = prev.get(v);
         }
 
+
+
+
         // Prevrátime cestu (lebo sme šli od konca)
         Collections.reverse(path);
         return path;
