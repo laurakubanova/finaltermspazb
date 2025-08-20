@@ -1,0 +1,119 @@
+package sk.upjs.paz;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+
+public class Finalterm {
+    int[] p;
+    ArrayList<Zviera> zvierata;
+    HashSet<Integer> mnozina;
+    int[] riesenie;
+    ArrayList<Zviera> konkretneDruhy;
+    int minimum = Integer.MAX_VALUE;
+    int k;
+    HashSet<Integer> h;
+    int velkostmnozyinyDruhov = 0;
+
+
+    public void zvierataPriVode(ArrayList<Zviera> zvierata, int pocetDruhov, int k) {
+        mnozina = new HashSet<>();
+        for (int i = 0; i < pocetDruhov; i++) {
+            mnozina.add(i);
+        }
+        p = new int[zvierata.size()];
+        this.zvierata = zvierata;
+        riesenie = new int[p.length];
+        //System.out.println(mnozina);
+        this.k = k;
+
+        generuj(0);
+        System.out.println(minimum);
+        System.out.println(konkretneDruhy);
+    }
+
+
+    public void najViacDruhov() {
+
+    }
+
+
+    private void generuj(int odIdx) {
+        if (odIdx == p.length) {
+            //System.out.println(Arrays.toString(p));
+            spracuj();
+            return;
+        }
+
+        for (int i = 0; i <= 1; i++) {
+            p[odIdx] = i;
+            generuj(odIdx + 1);
+        }
+    }
+
+    public void spracuj() {
+        HashSet<Integer> kopia = (HashSet<Integer>) mnozina.clone();
+        HashSet<Integer> aktualneZvierata = new HashSet<>();
+
+
+        for (int i = 0; i < p.length; i++) {
+            if (p[i] == 1) {
+                for (Integer z : zvierata.get(i).druhy) {
+                    kopia.remove(z);
+                }
+            }
+        }
+
+        if (kopia.isEmpty()) {
+            riesenie = p.clone();
+            ArrayList<Zviera> ktoJepriVode = new ArrayList<>();
+            int pocitadlo = 0;
+
+
+            for (int i = 0; i < riesenie.length; i++) {
+                if (p[i] == 1) {
+                    pocitadlo++;
+                    ktoJepriVode.add(zvierata.get(i));
+                }
+            }
+
+
+
+            if (pocitadlo < minimum) {
+                minimum = pocitadlo;
+                konkretneDruhy = ktoJepriVode;
+            }
+        }
+
+
+    }
+
+    public static void main(String[] args) {
+        int[] vstup1 = {1, 2, 3};
+        int[] vstup2 = {2, 4};
+        int[] vstup3 = {3, 4};
+        int[] vstup4 = {0, 2, 4};
+
+        int [][] p = {vstup1,vstup2,vstup3,vstup4};
+
+
+        Zviera z = new Zviera(vstup1);
+        Zviera z1 = new Zviera(vstup2);
+        Zviera z2 = new Zviera(vstup3);
+        Zviera z3 = new Zviera(vstup4);
+
+
+        ArrayList<Zviera> list = new ArrayList<>();
+        list.add(z);
+        list.add(z1);
+        list.add(z2);
+        list.add(z3);
+
+
+        Finalterm f = new Finalterm();
+        f.zvierataPriVode(list, 5, 2);
+        f.najViacDruhov();
+
+    }
+
+
+}
